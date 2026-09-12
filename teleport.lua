@@ -1,245 +1,180 @@
--- Pastikan player dan GUI bersih jika script dijalankan ulang
+-- Delta Executor Modern Teleport Hub (Minimized to "TP" button)
+
 local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local LocalPlayer = Players.LocalPlayer
 
-if playerGui:FindFirstChild("WaypointTeleportGui") then
-    playerGui.WaypointTeleportGui:Destroy()
-end
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local Title = Instance.new("TextLabel")
+local MinimizeButton = Instance.new("TextButton")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local SaveButton = Instance.new("TextButton")
+local SaveCorner = Instance.new("UICorner")
 
--- Membuat ScreenGui Utama
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "WaypointTeleportGui"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = playerGui
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "ModernTeleportGUI"
 
--- Membuat Frame Utama (Diperkecil ukurannya)
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 200, 0, 280)
-mainFrame.Position = UDim2.new(0.05, 0, 0.2, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
-mainFrame.BorderSizePixel = 0
-mainFrame.Active = true
-mainFrame.Draggable = true
-mainFrame.Parent = screenGui
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainFrame.Position = UDim2.new(0.5, -100, 0.5, -140)
+MainFrame.Size = UDim2.new(0, 200, 0, 280)
+MainFrame.Active = true
+MainFrame.Draggable = true
 
-local cornerMain = Instance.new("UICorner")
-cornerMain.CornerRadius = UDim.new(0, 10)
-cornerMain.Parent = mainFrame
+UICorner.Parent = MainFrame
+UICorner.CornerRadius = UDim.new(0, 10)
 
--- Judul GUI (Disesuaikan ukurannya)
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(0.7, 0, 0, 32)
-titleLabel.Position = UDim2.new(0.05, 0, 0, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "🔥TELEPORT"
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.TextSize = 12
-titleLabel.Font = Enum.Font.GothamBold
-titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-titleLabel.Parent = mainFrame
+UIStroke.Parent = MainFrame
+UIStroke.Color = Color3.fromRGB(255, 0, 0)
+UIStroke.Thickness = 2.5
 
--- Tombol Minimalkan (-)
-local minimizeButton = Instance.new("TextButton")
-minimizeButton.Size = UDim2.new(0, 26, 0, 26)
-minimizeButton.Position = UDim2.new(0.82, 0, 0, 3)
-minimizeButton.BackgroundColor3 = Color3.fromRGB(45, 45, 60)
-minimizeButton.Text = "-"
-minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-minimizeButton.TextSize = 14
-minimizeButton.Font = Enum.Font.GothamBold
-minimizeButton.Parent = mainFrame
+Title.Parent = MainFrame
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0, 10, 0, 0)
+Title.Size = UDim2.new(1, -50, 0, 35)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "TELEPORT HUB"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 13
+Title.TextXAlignment = Enum.TextXAlignment.Left
 
-local cornerMin = Instance.new("UICorner")
-cornerMin.CornerRadius = UDim.new(0, 6)
-cornerMin.Parent = minimizeButton
+MinimizeButton.Parent = MainFrame
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MinimizeButton.Position = UDim2.new(1, -30, 0, 6)
+MinimizeButton.Size = UDim2.new(0, 24, 0, 24)
+MinimizeButton.Font = Enum.Font.GothamBold
+MinimizeButton.Text = "-"
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.TextSize = 16
 
--- Tombol Kecil "ZB" (Saat diminimalkan)
-local cpButton = Instance.new("TextButton")
-cpButton.Size = UDim2.new(0, 40, 0, 40)
-cpButton.Position = UDim2.new(0, 0, 0, 0)
-cpButton.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
-cpButton.Text = "ZB"
-cpButton.TextColor3 = Color3.fromRGB(0, 170, 255)
-cpButton.TextSize = 13
-cpButton.Font = Enum.Font.GothamBold
-cpButton.Visible = false
-cpButton.Active = true
-cpButton.Draggable = true
-cpButton.Parent = screenGui
+local MinCorner = Instance.new("UICorner")
+MinCorner.Parent = MinimizeButton
+MinCorner.CornerRadius = UDim.new(0, 6)
 
-local cornerCp = Instance.new("UICorner")
-cornerCp.CornerRadius = UDim.new(0, 8)
-cornerCp.Parent = cpButton
+ScrollingFrame.Parent = MainFrame
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.Position = UDim2.new(0, 8, 0, 42)
+ScrollingFrame.Size = UDim2.new(1, -16, 1, -98)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ScrollingFrame.ScrollBarThickness = 3
 
-local strokeCp = Instance.new("UIStroke")
-strokeCp.Color = Color3.fromRGB(0, 170, 255)
-strokeCp.Thickness = 1.5
-strokeCp.Parent = cpButton
+UIListLayout.Parent = ScrollingFrame
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 6)
 
--- Container Konten
-local contentContainer = Instance.new("Frame")
-contentContainer.Size = UDim2.new(1, 0, 0, 248)
-contentContainer.Position = UDim2.new(0, 0, 0, 32)
-contentContainer.BackgroundTransparency = 1
-contentContainer.Parent = mainFrame
+SaveButton.Parent = MainFrame
+SaveButton.BackgroundColor3 = Color3.fromRGB(180, 20, 20)
+SaveButton.Position = UDim2.new(0, 10, 1, -46)
+SaveButton.Size = UDim2.new(1, -20, 0, 34)
+SaveButton.Font = Enum.Font.GothamBold
+SaveButton.Text = "Tandai Lokasi"
+SaveButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SaveButton.TextSize = 12
 
--- Garis Pembatas
-local divider = Instance.new("Frame")
-divider.Size = UDim2.new(0.9, 0, 0, 1)
-divider.Position = UDim2.new(0.05, 0, 0, 0)
-divider.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
-divider.BorderSizePixel = 0
-divider.Parent = contentContainer
+SaveCorner.Parent = SaveButton
+SaveCorner.CornerRadius = UDim.new(0, 6)
 
--- Tombol "Tandai Lokasi Ini"
-local saveButton = Instance.new("TextButton")
-saveButton.Size = UDim2.new(0.9, 0, 0, 36)
-saveButton.Position = UDim2.new(0.05, 0, 0, 10)
-saveButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-saveButton.Text = "📌 Tandai Lokasi"
-saveButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-saveButton.TextSize = 12
-saveButton.Font = Enum.Font.GothamSemibold
-saveButton.Parent = contentContainer
-
-local cornerSave = Instance.new("UICorner")
-cornerSave.CornerRadius = UDim.new(0, 6)
-cornerSave.Parent = saveButton
-
--- ScrollingFrame untuk daftar tempat
-local scrollingFrame = Instance.new("ScrollingFrame")
-scrollingFrame.Size = UDim2.new(0.9, 0, 0, 185)
-scrollingFrame.Position = UDim2.new(0.05, 0, 0, 54)
-scrollingFrame.BackgroundTransparency = 1
-scrollingFrame.BorderSizePixel = 0
-scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-scrollingFrame.ScrollBarThickness = 3
-scrollingFrame.Parent = contentContainer
-
-local uiListLayout = Instance.new("UIListLayout")
-uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-uiListLayout.Padding = UDim.new(0, 6)
-uiListLayout.Parent = scrollingFrame
-
--- Logika Fitur Minimalkan & Tombol CP
-minimizeButton.MouseButton1Click:Connect(function()
-    cpButton.Position = mainFrame.Position
-    mainFrame.Visible = false
-    cpButton.Visible = true
+local isMinimized = false
+MinimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    ScrollingFrame.Visible = not isMinimized
+    SaveButton.Visible = not isMinimized
+    
+    if isMinimized then
+        MainFrame.Size = UDim2.new(0, 70, 0, 35)
+        Title.Visible = false
+        MinimizeButton.Size = UDim2.new(1, -12, 1, -6)
+        MinimizeButton.Position = UDim2.new(0, 6, 0, 3)
+        MinimizeButton.Text = "TP"
+        MinimizeButton.TextSize = 13
+    else
+        MainFrame.Size = UDim2.new(0, 200, 0, 280)
+        Title.Visible = true
+        MinimizeButton.Size = UDim2.new(0, 24, 0, 24)
+        MinimizeButton.Position = UDim2.new(1, -30, 0, 6)
+        MinimizeButton.Text = "-"
+        MinimizeButton.TextSize = 16
+    end
 end)
 
-cpButton.MouseButton1Click:Connect(function()
-    mainFrame.Position = cpButton.Position
-    mainFrame.Visible = true
-    cpButton.Visible = false
-end)
-
--- Tabel untuk menyimpan data waypoint dan marker
-local savedWaypoints = {}
 local waypointCount = 0
 
--- Fungsi untuk melakukan teleportasi karakter
-local function teleportTo(position)
-    local character = player.Character
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 3, 0))
-    end
+local function createVisualMarker(position)
+    local part = Instance.new("Part")
+    part.Shape = Enum.PartType.Ball
+    part.Size = Vector3.new(3, 3, 3)
+    part.Position = position
+    part.Anchored = true
+    part.CanCollide = false
+    part.Material = Enum.Material.Neon
+    part.Color = Color3.fromRGB(0, 150, 255)
+    part.Parent = workspace
+
+    local light = Instance.new("PointLight")
+    light.Color = Color3.fromRGB(0, 150, 255)
+    light.Range = 10
+    light.Brightness = 4
+    light.Parent = part
+    
+    return part
 end
 
--- Fungsi saat tombol "Tandai Lokasi" ditekan
-saveButton.MouseButton1Click:Connect(function()
-    local character = player.Character
-    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
+local function addWaypoint()
+    local char = LocalPlayer.Character
+    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
     
-    local currentPos = character.HumanoidRootPart.Position
     waypointCount = waypointCount + 1
-    local currentId = waypointCount
+    local pos = char.HumanoidRootPart.Position
+    local marker = createVisualMarker(pos)
     
-    -- MEMBUAT CAHAYA SANGAT PENDEK, KECIL, DAN WARNA BIRU
-    local markerPart = Instance.new("Part")
-    markerPart.Size = Vector3.new(0.4, 2, 0.4) -- Pendek dan kecil (tinggi hanya 2 stud)
-    markerPart.Position = currentPos + Vector3.new(0, 1, 0)
-    markerPart.Anchored = true
-    markerPart.CanCollide = false
-    markerPart.Transparency = 0.2
-    markerPart.Color = Color3.fromRGB(0, 120, 255) -- Warna biru solid
-    markerPart.Material = Enum.Material.Neon
-    markerPart.Parent = workspace
+    local itemFrame = Instance.new("Frame")
+    itemFrame.Parent = ScrollingFrame
+    itemFrame.BackgroundTransparency = 1
+    itemFrame.Size = UDim2.new(1, 0, 0, 32)
     
-    local light = Instance.new("PointLight")
-    light.Color = Color3.fromRGB(0, 150, 255) -- Cahaya biru lembut
-    light.Range = 6 -- Jangkauan sangat kecil
-    light.Brightness = 2
-    light.Parent = markerPart
+    local tpBtn = Instance.new("TextButton")
+    tpBtn.Parent = itemFrame
+    tpBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    tpBtn.Size = UDim2.new(0, 130, 1, 0)
+    tpBtn.Font = Enum.Font.GothamMedium
+    tpBtn.Text = "Lokasi " .. waypointCount
+    tpBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
+    tpBtn.TextSize = 11
     
-    -- CONTAINER BARIS (Tombol Teleport & Hapus ukuran kecil)
-    local rowFrame = Instance.new("Frame")
-    rowFrame.Size = UDim2.new(1, 0, 0, 32)
-    rowFrame.BackgroundTransparency = 1
-    rowFrame.Parent = scrollingFrame
+    local tpCorner = Instance.new("UICorner")
+    tpCorner.Parent = tpBtn
+    tpCorner.CornerRadius = UDim.new(0, 5)
     
-    -- Tombol Teleport
-    local tpButton = Instance.new("TextButton")
-    tpButton.Size = UDim2.new(0.75, 0, 1, 0)
-    tpButton.BackgroundColor3 = Color3.fromRGB(45, 45, 60)
-    tpButton.Text = "📍 Tempat " .. currentId
-    tpButton.TextColor3 = Color3.fromRGB(220, 220, 220)
-    tpButton.TextSize = 12
-    tpButton.Font = Enum.Font.GothamMedium
-    tpButton.Parent = rowFrame
+    local delBtn = Instance.new("TextButton")
+    delBtn.Parent = itemFrame
+    delBtn.BackgroundColor3 = Color3.fromRGB(150, 30, 30)
+    delBtn.Position = UDim2.new(0, 136, 0, 0)
+    delBtn.Size = UDim2.new(0, 38, 1, 0)
+    delBtn.Font = Enum.Font.GothamBold
+    delBtn.Text = "X"
+    delBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    delBtn.TextSize = 11
     
-    local cornerTp = Instance.new("UICorner")
-    cornerTp.CornerRadius = UDim.new(0, 6)
-    cornerTp.Parent = tpButton
+    local delCorner = Instance.new("UICorner")
+    delCorner.Parent = delBtn
+    delCorner.CornerRadius = UDim.new(0, 5)
     
-    -- Tombol Hapus
-    local deleteButton = Instance.new("TextButton")
-    deleteButton.Size = UDim2.new(0.22, 0, 1, 0)
-    deleteButton.Position = UDim2.new(0.78, 0, 0, 0)
-    deleteButton.BackgroundColor3 = Color3.fromRGB(180, 40, 40)
-    deleteButton.Text = "❌"
-    deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    deleteButton.TextSize = 11
-    deleteButton.Font = Enum.Font.GothamBold
-    deleteButton.Parent = rowFrame
-    
-    local cornerDel = Instance.new("UICorner")
-    cornerDel.CornerRadius = UDim.new(0, 6)
-    cornerDel.Parent = deleteButton
-    
-    -- Simpan referensi data waypoint
-    savedWaypoints[currentId] = {
-        position = currentPos,
-        marker = markerPart,
-        uiRow = rowFrame
-    }
-    
-    -- Event Teleport
-    tpButton.MouseButton1Click:Connect(function()
-        if savedWaypoints[currentId] then
-            teleportTo(savedWaypoints[currentId].position)
+    tpBtn.MouseButton1Click:Connect(function()
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
         end
     end)
     
-    -- Event Hapus Waypoint
-    deleteButton.MouseButton1Click:Connect(function()
-        if savedWaypoints[currentId] then
-            if savedWaypoints[currentId].marker then
-                savedWaypoints[currentId].marker:Destroy()
-            end
-            if savedWaypoints[currentId].uiRow then
-                savedWaypoints[currentId].uiRow:Destroy()
-            end
-            savedWaypoints[currentId] = nil
-        end
+    delBtn.MouseButton1Click:Connect(function()
+        if marker then marker:Destroy() end
+        itemFrame:Destroy()
+        ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 10)
     end)
     
-    -- Animasi klik tombol simpan
-    saveButton.BackgroundColor3 = Color3.fromRGB(0, 220, 100)
-    task.wait(0.2)
-    saveButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-end)
+    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 10)
+end
 
-print("GUI Selesai: Menu diperkecil & Cahaya penanda diubah jadi pendek berwarna biru!")
+SaveButton.MouseButton1Click:Connect(addWaypoint)
