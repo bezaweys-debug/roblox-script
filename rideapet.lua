@@ -232,11 +232,11 @@ applySpeedBtn.MouseButton1Click:Connect(function()
 	end
 end)
 
--- Fungsi Filter (Mengabaikan "spawn", "base", "_egg", dan "dog")
+-- Fungsi Filter (Mengabaikan "spawn", "base", "_egg", "dog", "brown", "white", "stone", "leaf", "cracked", "easter", "golden", "glass", "ice", dan "mushroom")
 local function isValidEgg(name)
 	local lowerName = string.lower(name)
 	
-	if string.find(lowerName, "spawn") or string.find(lowerName, "base") or string.find(lowerName, "_egg") or string.find(lowerName, "dog") then
+	if string.find(lowerName, "spawn") or string.find(lowerName, "base") or string.find(lowerName, "_egg") or string.find(lowerName, "dog") or string.find(lowerName, "brown") or string.find(lowerName, "white") or string.find(lowerName, "stone") or string.find(lowerName, "leaf") or string.find(lowerName, "cracked") or string.find(lowerName, "easter") or string.find(lowerName, "golden") or string.find(lowerName, "glass") or string.find(lowerName, "ice") or string.find(lowerName, "mushroom") then
 		return false
 	end
 	
@@ -247,13 +247,15 @@ local function isValidEgg(name)
 	return false
 end
 
--- 7. Fungsi Mengambil Warna Fisik dari Bagian Telur (Blackhole = Pink, Cherub = Merah)
+-- 7. Fungsi Mengambil Warna Fisik dari Bagian Telur (Blackhole = Pink, Cherub = Merah, Solaris = Gold)
 local function getPartColor(part, parentName)
 	local lowerParentName = string.lower(parentName or "")
 	if string.find(lowerParentName, "blackhole") then
 		return Color3.fromRGB(255, 105, 180)
 	elseif string.find(lowerParentName, "cherub") then
 		return Color3.fromRGB(255, 0, 0)
+	elseif string.find(lowerParentName, "solaris") then
+		return Color3.fromRGB(255, 215, 0)
 	end
 	
 	if part:IsA("BasePart") then
@@ -291,7 +293,7 @@ local function createEggLabel(eggPart, parentObj)
 	textLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 	textLabel.Parent = billboard
 
-	if string.find(lowerName, "blackhole") or string.find(lowerName, "cherub") then
+	if string.find(lowerName, "blackhole") or string.find(lowerName, "cherub") or string.find(lowerName, "solaris") then
 		local highlightName = "GlobalCustomHighlight"
 		local highlight = eggPart:FindFirstChild(highlightName)
 		if not highlight then
